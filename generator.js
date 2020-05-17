@@ -7,8 +7,6 @@ var globI = 0;
 var globJ = 0;
 var initialized = 0;
 
-
-
 function init() {
       for(var i = 0; i < N; i++) {
         board.push([]);
@@ -33,6 +31,7 @@ function eraseValue(i, j) {
   if(prevValue == 0) {
     return;
   }
+
   board[i][j] = 0;
   rows[i][prevValue - 1] = false;
   columns[j][prevValue - 1] = false;
@@ -41,7 +40,6 @@ function eraseValue(i, j) {
 }
 
 function generateBoard() {
-    init();
     buildSudoku();
     for(var i = 0; i < N; i++) {
       var numberToErase = between(0, N - 1);
@@ -50,6 +48,17 @@ function generateBoard() {
         eraseValue(i, j);
       }
     }
+}
+
+function generateRandomSudoku() {
+  for(var i = 0; i < N; i += 3) {
+    var value = between(1, N);
+    board[i][i] = value;
+    rows[i][value - 1] = true;
+    columns[i][value - 1] = true;
+    boxes[map(i, i)][value - 1] = true;
+  }
+  generateBoard();
 }
 
 function findNext() {
@@ -120,17 +129,64 @@ function buildSudoku() {
 function between(min, max) {
   return Math.floor(
     Math.random() * (max - min) + min
-  )
+  );
 }
 
-generateBoard();
-console.log(board);
-constructSudoku();
-console.log(board);
+function draw() {
+  var table = document.getElementById("board");
+  var rows = table.rows;
+  for(var i = 0; i < N; i++) {
+    var currentRow = rows[i];
+    for(var j = 0; j < N; j++) {
+      if(board[i][j] != 0) {
+        currentRow.cells[j].innerHTML = "<input type=\"number\" value=" + board[i][j] + " disabled >";
+      } else {
+        currentRow.cells[j].innerHTML = "<input class=\"nonPredifined\" type=\"number\" onkeyup=\"javascript:validate(this,event);\" id=\"" + i + "," + j + "\">";
+      }
+    }
+  }
+}
 
-// buildSudoku();
-// console.log("i = " + (initialized++) + board);
+function check(value, i, j, box) {
+  if(value < 1 || value > N || (value * 10) % 10 != 0) {
+    return false;
+  }
+  console.log("Value:" + value + " " + i + " " + j + " " + box);
+  if(rows[i][value - 1] || columns[j][value - 1] || boxes[box][value - 1]) {
+    return false;
+  }
+  return true;
+}
+
+function validate(element,event) {
+  var val = element.value;
+  classes = element.className.split(" ");
+  var wrongInputPresented = false;
+  if (classes.indexOf("wrongInput") != -1) {
+    wrongInputPresented = true;
+  }
+  var id = element.id.split(",");
+  var i = parseInt(id[0], 10);
+  var j = parseInt(id[1], 10);
+  var box = map(i, j);
+  var checkRes = check(val, i, j, box);
+  if(!checkRes) {
+      if(!wrongInputPresented) {
+        element.classList.add("wrongInput");
+      }
+      return;
+  } else if(wrongInputPresented) {
+    element.classList.remove("wrongInput");
+  }
+}
 
 
-// .call();
-// console.log(board);
+function onSolveBtn() {
+  constructSudoku();
+  draw();
+}
+init();
+generateRandomSudoku();
+draw();
+var solveBtn = document.getElementById("solveBtn");
+solveBtn.addEventListener("click", onSolveBtn);

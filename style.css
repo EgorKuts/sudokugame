@@ -1,0 +1,75 @@
+ html,body{
+  background-color: #FAFAFA
+ }
+ body {
+   height: 100%;
+ }
+ input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+ table{
+  border: 1px solid #000000;
+ }
+ td{
+  border: 2px solid #000000;
+  text-align: center;
+  vertical-align: middle;
+ }
+
+ input{
+  color: #000000;
+  padding: 0;
+  border: 0;
+  text-align: center;
+  width: 48px;
+  height: 48px;
+  font-size: 24px;
+  background-color: #ffffff;
+  outline: none;
+ }
+ input disabled{
+  background-color: green;
+ }
+
+ .nonPredifined {
+  background-color: #D3D3D3;
+ }
+
+ .solveBtnClass {
+   position: relative;
+   z-index: 1;
+  margin-top: 10px;
+ }
+
+ #solveBtn {
+  background-color: #4CAF50; /* Green */
+  border-radius: 4px;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+ }
+ .container {
+   height: 100%;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   text-align: center;
+ }
+
+ .boardCell {
+   border: 4px 1px 1px 1px;
+ }
+
+ .wrongInput {
+   background-color: red;
+ }
