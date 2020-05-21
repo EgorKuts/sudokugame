@@ -1,4 +1,5 @@
 Simple sudoku game for web-browsers written in Java Script
+
 Features:
 -Generates a random board
 -Validates user's input
